@@ -1,8 +1,13 @@
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+
 fun main() {
-    val n = readLine()!!.toInt()
-    val input = arrayListOf<String>()
-    repeat(n) { input.add(readLine()!!) }
-    val cards = input.distinct()
-    val result = cards.sortedWith(compareBy ({ it.length }, { it }))
-    result.forEach { println(it) }
+    val br = BufferedReader(InputStreamReader(System.`in`))
+    val bw = BufferedWriter(OutputStreamWriter(System.out))
+    List(br.readLine()!!.toInt()) { br.readLine()!! }.sortedWith(compareBy({ it.length }, { it })).distinct()
+        .forEach { bw.write("$it\n") }
+    bw.flush()
+    bw.close()
 }
