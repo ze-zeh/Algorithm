@@ -6,7 +6,9 @@ import java.io.OutputStreamWriter
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
-    List(br.readLine()!!.toInt()) { br.readLine()!! }.sortedWith(compareBy({ it.length }, { it })).distinct()
+    Array(br.readLine()!!.toInt()) { br.readLine()!! }
+        .sortedWith(compareBy({ it.length }, { it }))
+        .distinct()
         .forEach { bw.write("$it\n") }
     bw.flush()
     bw.close()
