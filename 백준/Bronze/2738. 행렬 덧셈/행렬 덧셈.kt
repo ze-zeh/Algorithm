@@ -4,6 +4,7 @@ import java.util.*
 
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
+    val sb = StringBuilder()
     var st = StringTokenizer(br.readLine())
     val n = st.nextToken().toInt()
     val m = st.nextToken().toInt()
@@ -20,8 +21,9 @@ fun main() {
 
     for (i in 0 until n) {
         for (j in 0 until m) {
-            print("${arr[i][j]} ")
+            sb.append("${arr[i][j]} ")
         }
-        println()
+        sb.append("\n")
     }
+    print(sb)
 }
