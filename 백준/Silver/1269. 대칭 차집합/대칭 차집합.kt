@@ -9,8 +9,9 @@ fun main() {
     val (n, m) = br.readLine().split(" ").map { it.toInt() }
     val a = br.readLine().split(" ").map { it.toInt() }.toHashSet()
     val b = br.readLine().split(" ").map { it.toInt() }.toHashSet()
-
-    bw.write("${((a - b) + (b - a)).size}")
+    var count = 0
+    a.forEach { if (b.contains(it)) count++ }
+    bw.write("${n + m - count * 2}")
     bw.flush()
     bw.close()
 }
