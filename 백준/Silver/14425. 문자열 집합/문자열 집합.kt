@@ -7,7 +7,7 @@ fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
     val bw = BufferedWriter(OutputStreamWriter(System.out))
     val (n, m) = br.readLine().split(" ").map { it.toInt() }
-    val s = arrayListOf<String>()
+    val s = HashSet<String>()
     var count = 0
 
     repeat(n) {
