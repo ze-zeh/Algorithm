@@ -15,12 +15,12 @@ class Main {
                 stack.push('(');
                 laser = true;
             } else {
+                stack.pop();
                 if (laser) {
-                    count += stack.size() - 1;
+                    count += stack.size();
                 } else {
                     count++;
                 }
-                stack.pop();
                 laser = false;
             }
         }
