@@ -1,5 +1,5 @@
 class Solution {
-    public int countSubstrings(String s) {
+    public int countSubstrings(String s) { // brute force로 그냥 다 돌았음
         int count = 0;
 
         for (int i = 0; i < s.length(); i++) {

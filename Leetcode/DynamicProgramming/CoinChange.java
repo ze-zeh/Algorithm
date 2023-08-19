@@ -4,7 +4,7 @@ class Solution {
         dp[0] = 0;
 
         for (int i = 1; i <= amount; i++) {
-            dp[i] = Integer.MAX_VALUE;
+            dp[i] = Integer.MAX_VALUE; // 표시
 
             for (int j = 0; j < coins.length; j++) {
                 if (i >= coins[j] && dp[i - coins[j]] != Integer.MAX_VALUE) {
