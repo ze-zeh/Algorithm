@@ -57,34 +57,36 @@ class Main {
         br.close();
     }
 
+    static private boolean isPastable(Sticker sticker, int i, int j) {
+        for (int x = 0; x < sticker.r; x++) {
+            for (int y = 0; y < sticker.c; y++) {
+                if (Map[i + x][j + y] == 1 && sticker.shape[x][y] == 1) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    static private void paste(Sticker sticker, int i, int j) {
+        for (int x = 0; x < sticker.r; x++) {
+            for (int y = 0; y < sticker.c; y++) {
+                if (sticker.shape[x][y] == 1) {
+                    Map[i + x][j + y] = 1;
+                }
+            }
+        }
+    }
+
     static private void putSticker(Sticker sticker) {
         for (int n = 0; n < 4; n++) {
             for (int i = 0; i <= N - sticker.r; i++) {
                 for (int j = 0; j <= M - sticker.c; j++) {
-                    boolean isOverlapped = false;
-
-                    for (int x = 0; x < sticker.r; x++) {
-                        for (int y = 0; y < sticker.c; y++) {
-                            if (Map[i + x][j + y] == 1 && sticker.shape[x][y] == 1) {
-                                isOverlapped = true;
-                                break;
-                            }
-                        }
-
-                        if (isOverlapped) break;
+                    if (isPastable(sticker, i, j)) {
+                        paste(sticker, i, j);
+                        return;
                     }
-
-                    if (isOverlapped) continue;
-
-                    for (int x = 0; x < sticker.r; x++) {
-                        for (int y = 0; y < sticker.c; y++) {
-                            if (sticker.shape[x][y] == 1) {
-                                Map[i + x][j + y] = 1;
-                            }
-                        }
-                    }
-
-                    return;
                 }
             }
 
