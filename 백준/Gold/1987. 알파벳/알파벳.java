@@ -7,6 +7,7 @@ class Main {
     static int C;
     static int Answer;
     static char[][] Map;
+    static boolean[] Visited;
     static int[] Dx = {-1, 0, 1, 0};
     static int[] Dy = {0, -1, 0, 1};
 
@@ -17,6 +18,7 @@ class Main {
         C = Integer.parseInt(st.nextToken());
         Answer = 0;
         Map = new char[R][C];
+        Visited = new boolean[26];
 
         for (int i = 0; i < R; i++) {
             String str = br.readLine();
@@ -26,36 +28,25 @@ class Main {
             }
         }
 
-        dfs(new boolean[26], 0, 0);
+        backtracking(0, 0, 1);
 
         System.out.println(Answer);
         br.close();
     }
 
-    private static void dfs(boolean[] arr, int x, int y) {
-        arr[Map[x][y] - 'A'] = true;
-        int count = count(arr);
-        Answer = Math.max(Answer, count);
+    private static void backtracking(int x, int y, int depth) {
+        Visited[Map[x][y] - 'A'] = true;
+        Answer = Math.max(Answer, depth);
 
         for (int i = 0; i < 4; i++) {
             int nx = x + Dx[i];
             int ny = y + Dy[i];
 
-            if (nx >= 0 && nx < R && ny >= 0 && ny < C && !arr[Map[nx][ny] - 'A']) {
-                dfs(arr, nx, ny);
+            if (nx >= 0 && nx < R && ny >= 0 && ny < C && !Visited[Map[nx][ny] - 'A']) {
+                backtracking(nx, ny, depth + 1);
             }
         }
 
-        arr[Map[x][y] - 'A'] = false;
-    }
-
-    static private int count(boolean[] arr) {
-        int count = 0;
-
-        for (int i = 0; i < 26; i++) {
-            if (arr[i]) count++;
-        }
-
-        return count;
+        Visited[Map[x][y] - 'A'] = false;
     }
 }
