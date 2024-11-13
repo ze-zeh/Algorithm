@@ -1,17 +1,18 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class Main {
-    public static void main(String[] args) throws Exception {
+public class Main {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int S = Integer.parseInt(st.nextToken());
         int[] arr = new int[N + 1];
-        int min = Integer.MAX_VALUE;
-        int start = 0;
-        int end = 0;
+        int answer = Integer.MAX_VALUE;
+        int left = 0;
+        int right = 0;
         int sum = 0;
         st = new StringTokenizer(br.readLine());
 
@@ -19,19 +20,19 @@ class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        while (end <= N) {
+        while (right <= N) {
             if (sum >= S) {
-                min = Math.min(min, end - start);
-                sum -= arr[start++];
+                answer = Math.min(answer, right - left);
+                sum -= arr[left++];
             } else {
-                sum += arr[end++];
+                sum += arr[right++];
             }
         }
 
-        if (min == Integer.MAX_VALUE) {
+        if (answer == Integer.MAX_VALUE) {
             System.out.println(0);
         } else {
-            System.out.println(min);
+            System.out.println(answer);
         }
     }
 }
