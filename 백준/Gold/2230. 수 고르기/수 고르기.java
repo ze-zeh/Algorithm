@@ -21,7 +21,7 @@ public class Main {
 
         Arrays.sort(arr);
 
-        while (left < N - 1 && right < N) {
+        while (right < N) {
             int gap = arr[right] - arr[left];
 
             if (gap == M) {
