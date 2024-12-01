@@ -13,18 +13,14 @@ class Solution {
             hm.put(t, hm.get(t) + 1);
         }
         
-        int[] arr = new int[hm.size()];
-        int idx = 0;
+        List<Integer> list = new ArrayList<>(hm.values());
+        Collections.sort(list, Collections.reverseOrder());
         
-        for (int i : hm.values()) {
-            arr[idx++] = i;
-        }
-        
-        Arrays.sort(arr);
-        
-        for (int i = arr.length - 1; i >= 0 && k > 0; i--) {
+        for (int l : list) {
             answer++;
-            k -= arr[i];
+            k -= l;
+            
+            if (k <= 0) break;
         }
         
         return answer;
