@@ -1,24 +1,13 @@
 class Solution {
     public int solution(int n, int a, int b) {
-        int k = n;
-        int s = 0;
-        a--;
-        b--;
+        int answer = 0;
         
-        while (k > 1) {
-            k >>= 1;
-            s++;
-        }
-        
-        for (int i = 0; i < s; i++) {
-            for (int j = 0; j < n; j += (2 << i)) {
-                if (a >= j && b >= j && a < j + (2 << i) && b < j + (2 << i) ) {
-                    return i + 1;
-                }
-            }
+        while (a != b) {
+            answer++;
+            a = a / 2 + a % 2;
+            b = b / 2 + b % 2;
         }
 
-        return -1;
+        return answer;
     }
 }
-
