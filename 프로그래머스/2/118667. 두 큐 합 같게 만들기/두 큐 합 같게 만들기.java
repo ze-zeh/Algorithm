@@ -19,7 +19,7 @@ class Solution {
             b += n2;
         }
         
-        while (a != b && i <= (queue1.length + queue2.length) * 2) {
+        while (a != b && i <= (queue1.length) * 3) {
             if (a > b) {
                 int k = q1.poll();
                 
