@@ -2,8 +2,7 @@
 
 class Solution {
     public String solution(String X, String Y) {
-        String answer = "";
-        StringBuilder sb = new StringBuilder();
+        StringBuilder answer = new StringBuilder();
         int[] x = new int[10];
         int[] y = new int[10];
         
@@ -19,18 +18,16 @@ class Solution {
             int count = Math.min(x[i], y[i]);
             
             for (int j = 0; j < count; j++) {
-                sb.append(i);
+                answer.append(i);
             }
         }
         
-        if (sb.toString().equals("")) {
-            answer = "-1";
-        } else if (sb.charAt(0) == '0') {
-            answer = "0";
-        } else {
-            answer = sb.toString();
+        if (answer.toString().equals("")) {
+            return "-1";
+        } else if (answer.charAt(0) == '0') {
+            return "0";
         }
         
-        return answer;
+        return answer.toString();
     }
 }
