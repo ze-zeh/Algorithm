@@ -18,20 +18,19 @@ class Solution {
         for (int i = 0; i < targets.length; i++) {
             String target = targets[i];
             int count = 0;
-            boolean isDisabled = false;
             
             for (int j = 0; j < target.length(); j++) {
                 char ch = target.charAt(j);
                 
                 if (!hm.containsKey(ch)) {
-                    isDisabled = true;
+                    count = -1;
                     break;
                 }
                 
                 count += hm.get(ch);
             }
             
-            answer[i] = isDisabled ? -1 : count;
+            answer[i] = count;
         }
         
         return answer;
