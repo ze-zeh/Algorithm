@@ -10,15 +10,11 @@ class Solution {
         }
         
         for (int i = 0; i < photo.length; i++) {
-            int score = 0;
-            
             for (String person : photo[i]) {
                 if (hm.containsKey(person)) {
-                    score += hm.get(person);
+                    answer[i] += hm.get(person);
                 }
             }
-            
-            answer[i] = score;
         }
         
         return answer;
