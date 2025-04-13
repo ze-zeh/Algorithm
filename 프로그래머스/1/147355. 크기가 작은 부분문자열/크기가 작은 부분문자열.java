@@ -1,20 +1,10 @@
 class Solution {
     public int solution(String t, String p) {
         int answer = 0;
+        long pLong = Long.parseLong(p);
         
         for (int i = 0; i <= t.length() - p.length(); i++) {
-            for (int j = 0; j < p.length(); j++) {
-                int diff = t.charAt(i + j) - p.charAt(j);
-                
-                if (diff < 0) {
-                    answer++;
-                    break;
-                } else if (diff > 0) {
-                    break;
-                } else {
-                    if (j == p.length() - 1) answer++;
-                }
-            }
+            if (pLong >= Long.parseLong(t.substring(i, i + p.length()))) answer++;
         }
         
         return answer;
