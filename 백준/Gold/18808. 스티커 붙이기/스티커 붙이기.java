@@ -3,65 +3,100 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Main {
-    static class Sticker {
-        int r;
-        int c;
-        int[][] shape;
-
-        Sticker(int r, int c, int[][] shape) {
-            this.r = r;
-            this.c = c;
-            this.shape = shape;
-        }
-    }
-
-    static int N;
-    static int M;
-    static int K;
-    static int[][] Map;
-    static int Answer;
-    static Sticker[] Stickers;
+    static int N, M;
+    static boolean[][] Laptop;
 
     static public void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        Map = new int[N][M];
-        Answer = Integer.MAX_VALUE;
-        Stickers = new Sticker[K];
+        int K = Integer.parseInt(st.nextToken());
+        Laptop = new boolean[N][M];
 
         for (int i = 0; i < K; i++) {
             st = new StringTokenizer(br.readLine());
-            int r = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            int[][] sticker = new int[r][c];
 
-            for (int j = 0; j < r; j++) {
+            int R = Integer.parseInt(st.nextToken());
+            int C = Integer.parseInt(st.nextToken());
+            boolean[][] sticker = new boolean[R][C];
+
+            for (int r = 0; r < R; r++) {
                 st = new StringTokenizer(br.readLine());
-                for (int k = 0; k < c; k++) {
-                    sticker[j][k] = Integer.parseInt(st.nextToken());
+
+                for (int c = 0; c < C; c++) {
+                    int cell = Integer.parseInt(st.nextToken());
+
+                    sticker[r][c] = cell == 1;
                 }
             }
 
-            Stickers[i] = new Sticker(r, c, sticker);
+            for (int dir = 0; dir < 4; dir++) {
+                if (attachSticker(sticker, dir)) {
+                    break;
+                }
+            }
         }
 
-        for (int i = 0; i < K; i++) {
-            putSticker(Stickers[i]);
-        }
-
-        System.out.println(count(Map));
-
+        System.out.println(countCell());
         br.close();
     }
 
-    static private boolean isPastable(Sticker sticker, int i, int j) {
-        for (int x = 0; x < sticker.r; x++) {
-            for (int y = 0; y < sticker.c; y++) {
-                if (Map[i + x][j + y] == 1 && sticker.shape[x][y] == 1) {
-                    return false;
+    static public boolean attachSticker(boolean[][] sticker, int dir) {
+        if (dir != 0) {
+            sticker = rotate(sticker, dir);
+        }
+
+        int r = sticker.length;
+        int c = sticker[0].length;
+
+        for (int i = 0; i < N - r + 1; i++) {
+            for (int j = 0; j < M - c + 1; j++) {
+                if (isAttachable(sticker, i, j)) {
+                    attach(sticker, i, j);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    static public boolean[][] rotate(boolean[][] sticker, int dir) {
+        int r = dir == 2 ? sticker.length : sticker[0].length;
+        int c = dir == 2 ? sticker[0].length : sticker.length;
+        boolean[][] rSticker = new boolean[r][c];
+
+        if (dir == 1) {
+            for (int i = 0; i < r; i++) {
+                for (int j = 0; j < c; j++) {
+                    rSticker[i][j] = sticker[c - 1 - j][i];
+                }
+            }
+        } else if (dir == 2) {
+            for (int i = 0; i < r; i++) {
+                for (int j = 0; j < c; j++) {
+                    rSticker[i][j] = sticker[r - 1 - i][c - 1 - j];
+                }
+            }
+        } else {
+            for (int i = 0; i < r; i++) {
+                for (int j = 0; j < c; j++) {
+                    rSticker[i][j] = sticker[j][r - 1 - i];
+                }
+            }
+        }
+
+        return rSticker;
+    }
+
+    static public boolean isAttachable(boolean[][] sticker, int x, int y) {
+        for (int i = 0; i < sticker.length; i++) {
+            for (int j = 0; j < sticker[0].length; j++) {
+                if (sticker[i][j]) {
+                    if (Laptop[x + i][y + j]) {
+                        return false;
+                    }
                 }
             }
         }
@@ -69,64 +104,27 @@ class Main {
         return true;
     }
 
-    static private void paste(Sticker sticker, int i, int j) {
-        for (int x = 0; x < sticker.r; x++) {
-            for (int y = 0; y < sticker.c; y++) {
-                if (sticker.shape[x][y] == 1) {
-                    Map[i + x][j + y] = 1;
+    static public void attach(boolean[][] sticker, int x, int y) {
+        for (int i = 0; i < sticker.length; i++) {
+            for (int j = 0; j < sticker[0].length; j++) {
+                if (sticker[i][j]) {
+                    Laptop[x + i][y + j] = true;
                 }
             }
         }
     }
 
-    static private void putSticker(Sticker sticker) {
-        for (int n = 0; n < 4; n++) {
-            for (int i = 0; i <= N - sticker.r; i++) {
-                for (int j = 0; j <= M - sticker.c; j++) {
-                    if (isPastable(sticker, i, j)) {
-                        paste(sticker, i, j);
-                        return;
-                    }
-                }
-            }
-
-            sticker = rotate(sticker);
-        }
-    }
-
-    static private Sticker rotate(Sticker sticker) {
-        int[][] newShape = new int[sticker.c][sticker.r];
-
-        for (int i = 0; i < sticker.c; i++) {
-            for (int j = sticker.r - 1; j >= 0; j--) {
-                newShape[i][sticker.r - 1 - j] = sticker.shape[j][i];
-            }
-        }
-
-        return new Sticker(sticker.c, sticker.r, newShape);
-    }
-
-    static int count(int[][] map) {
+    static public int countCell() {
         int count = 0;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                if (map[i][j] == 1) {
+                if (Laptop[i][j]) {
                     count++;
                 }
             }
         }
 
         return count;
-    }
-
-    static void printSticker(int[][] sticker) {
-        for (int i = 0; i < sticker.length; i++) {
-            for (int j = 0; j < sticker[0].length; j++) {
-                System.out.print(sticker[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 }
