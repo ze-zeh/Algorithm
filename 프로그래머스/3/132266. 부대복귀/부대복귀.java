@@ -1,8 +1,6 @@
 import java.util.*;
 
-class Solution {
-    static int[] P;
-    
+class Solution {    
     class Edge {
         int to;
         int cost;
@@ -18,12 +16,10 @@ class Solution {
         int[] dist = new int[n];
         List<List<Integer>> adj = new ArrayList<>();
         PriorityQueue<Edge> pq = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
-        P = new int[n];
         
         for (int i = 0; i < n; i++) {
             adj.add(new ArrayList<>());
             dist[i] = Integer.MAX_VALUE;
-            P[i] = i;
         }
         
         dist[destination - 1] = 0;
