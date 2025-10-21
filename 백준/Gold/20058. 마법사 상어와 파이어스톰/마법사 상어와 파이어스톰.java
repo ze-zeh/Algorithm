@@ -42,16 +42,16 @@ public class Main {
     }
 
     private static void firestorm(int l) {
+        int[][] copy = copy(A);
+
         for (int i = 0; i < N; i += l) {
             for (int j = 0; j < N; j += l) {
-                rotate(l, i, j);
+                rotate(l, i, j, copy);
             }
         }
     }
 
-    private static void rotate(int l, int x, int y) {
-        int[][] copy = copy(A);
-
+    private static void rotate(int l, int x, int y, int[][] copy) {
         for (int i = 0; i < l; i++) {
             for (int j = 0; j < l; j++) {
                 A[x + i][y + j] = copy[x + l - 1 - j][y + i];
