@@ -14,15 +14,13 @@ public class Main {
         }
 
         while (true) {
-            boolean isPossible = true;
-
             if (d[0] > 0) {
                 d[0]--;
             } else {
                 if (d[1] > 0) {
                     d[1]--;
                 } else {
-                    isPossible = false;
+                    break;
                 }
             }
 
@@ -32,7 +30,7 @@ public class Main {
                 if (d[3] > 0) {
                     d[3]--;
                 } else {
-                    isPossible = false;
+                    break;
                 }
             }
 
@@ -46,7 +44,7 @@ public class Main {
                         if (d[3] > 0) {
                             d[3]--;
                         } else {
-                            isPossible = false;
+                            break;
                         }
                     }
                 } else {
@@ -56,14 +54,10 @@ public class Main {
                         if (d[1] > 0) {
                             d[1]--;
                         } else {
-                            isPossible = false;
+                            break;
                         }
                     }
                 }
-            }
-
-            if (!isPossible) {
-                break;
             }
 
             answer++;
