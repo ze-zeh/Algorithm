@@ -21,7 +21,8 @@ public class Main {
             st = new StringTokenizer(br.readLine());
 
             for (int j = 2; j <= M + 1; j++) {
-                Lake[i][j] = Lake[i - 1][j] + Lake[i - 1][j - 1] - Lake[i - 2][j - 1] + Integer.parseInt(st.nextToken());
+                int cell = Integer.parseInt(st.nextToken());
+                Lake[i][j] = Lake[i - 1][j] + Lake[i - 1][j - 1] - Lake[i - 2][j - 1] + cell;
             }
         }
 
