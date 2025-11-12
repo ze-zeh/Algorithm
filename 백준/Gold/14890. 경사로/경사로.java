@@ -55,7 +55,6 @@ public class Main {
                     }
 
                     i += L - 1;
-                    before = road[i];
                     count = 0;
                     continue;
                 }
