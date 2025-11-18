@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static int N, K, A, B;
@@ -69,7 +66,7 @@ public class Main {
             }
         }
 
-        dijkstra();
+        bfs();
         br.close();
     }
 
@@ -85,15 +82,14 @@ public class Main {
         return false;
     }
 
-    public static void dijkstra() {
-        PriorityQueue<Route> pq = new PriorityQueue<>((o1, o2) -> o1.dist - o2.dist);
+    public static void bfs() {
+        Queue<Route> queue = new LinkedList<>();
         boolean[] visited = new boolean[N];
-        pq.add(new Route(A));
+        queue.add(new Route(A));
         visited[A] = true;
 
-        while (!pq.isEmpty()) {
-            Route cur = pq.poll();
-            visited[cur.code] = true;
+        while (!queue.isEmpty()) {
+            Route cur = queue.poll();
 
             if (cur.code == B) {
                 System.out.println(cur.route);
@@ -102,7 +98,8 @@ public class Main {
 
             for (int a : adj.get(cur.code)) {
                 if (!visited[a]) {
-                    pq.add(new Route(a, cur.dist + 1, cur.route));
+                    queue.add(new Route(a, cur.dist + 1, cur.route));
+                    visited[a] = true;
                 }
             }
         }
