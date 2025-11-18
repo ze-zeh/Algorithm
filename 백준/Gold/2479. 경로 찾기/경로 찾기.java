@@ -6,7 +6,6 @@ public class Main {
     static int N, K, A, B;
     static int[] hc;
     static List<List<Integer>> adj;
-    static int[] d;
 
     static class Route {
         int code;
@@ -32,22 +31,7 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
         hc = new int[N];
-        d = new int[K];
         adj = new ArrayList<>();
-
-        for (int i = 0; i < K; i++) {
-            String s = "";
-
-            for (int j = 0; j < K; j++) {
-                if (i == j) {
-                    s += "1";
-                } else {
-                    s += "0";
-                }
-            }
-
-            d[i] = Integer.parseInt(s, 2);
-        }
 
         for (int i = 0; i < N; i++) {
             hc[i] = Integer.parseInt(br.readLine(), 2);
@@ -71,15 +55,8 @@ public class Main {
     }
 
     public static boolean isAdj(int x, int y) {
-        int adj = hc[x] ^ hc[y];
-
-        for (int i = 0; i < K; i++) {
-            if (adj == d[i]) {
-                return true;
-            }
-        }
-
-        return false;
+        int xor = hc[x] ^ hc[y];
+        return xor != 0 && (xor & (xor - 1)) == 0;
     }
 
     public static void bfs() {
