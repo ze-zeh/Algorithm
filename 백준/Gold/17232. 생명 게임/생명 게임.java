@@ -6,6 +6,7 @@ class Main {
     static int N, M, K;
     static int a, b;
     static boolean[][] map;
+    static int[][] prefix;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,6 +21,7 @@ class Main {
         b = Integer.parseInt(st.nextToken());
 
         map = new boolean[N][M];
+        prefix = new int[N + 1][M + 1];
 
         for (int i = 0; i < N; i++) {
             String s = br.readLine();
@@ -34,6 +36,7 @@ class Main {
         }
 
         for (int i = 0; i < T; i++) {
+            calcPrefix();
             simulate();
         }
 
@@ -66,6 +69,17 @@ class Main {
         return newArr;
     }
 
+    private static void calcPrefix() {
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= M; j++) {
+                prefix[i][j] = prefix[i - 1][j]
+                        + prefix[i][j - 1]
+                        - prefix[i - 1][j - 1]
+                        + (map[i - 1][j - 1] ? 1 : 0);
+            }
+        }
+    }
+
     public static boolean isSurvived(int x, int y) {
         boolean survived = map[x][y];
         int count = countNearby(x, y);
@@ -82,25 +96,16 @@ class Main {
     }
 
     public static int countNearby(int x, int y) {
-        int count = 0;
         int topBound = Math.max(x - K, 0);
-        int bottomBound = Math.min(x + K, N - 1);
+        int bottomBound = Math.min(x + K, N - 1) + 1;
         int leftBound = Math.max(y - K, 0);
-        int rightBound = Math.min(y + K, M - 1);
+        int rightBound = Math.min(y + K, M - 1) + 1;
 
-        for (int i = topBound; i <= bottomBound; i++) {
-            for (int j = leftBound; j <= rightBound; j++) {
-                if (i == x && j == y) {
-                    continue;
-                }
-
-                if (map[i][j]) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
+        return prefix[bottomBound][rightBound]
+                - prefix[topBound][rightBound]
+                - prefix[bottomBound][leftBound]
+                + prefix[topBound][leftBound]
+                - (map[x][y] ? 1 : 0);
     }
 
     public static void printMap() {
