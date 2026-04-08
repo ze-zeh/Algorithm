@@ -7,7 +7,6 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int sum = 0;
         int odd = 0;
         int even = 0;
 
@@ -15,12 +14,6 @@ public class Main {
             int height = Integer.parseInt(st.nextToken());
             odd += height % 2;
             even += height / 2;
-            sum += height;
-        }
-
-        if (sum % 3 != 0) {
-            System.out.println("NO");
-            return;
         }
 
         if (odd > even) {
