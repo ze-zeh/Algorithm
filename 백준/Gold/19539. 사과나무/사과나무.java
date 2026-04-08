@@ -18,8 +18,6 @@ public class Main {
 
         if (odd > even) {
             System.out.println("NO");
-        } else if (odd == even) {
-            System.out.println("YES");
         } else {
             if ((even - odd) % 3 == 0) {
                 System.out.println("YES");
