@@ -2,29 +2,24 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int k, int[] enemy) {
-        int capacity = 0;
-        int sum = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>();        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();     
+        int total = 0;
+        int block = 0;
         
         for (int i = 0; i < enemy.length; i++) {
-            sum += enemy[i];
+            total += enemy[i];
+            block += enemy[i];
+            pq.add(enemy[i]);
             
-            if (pq.size() < k) {
-                pq.add(enemy[i]);
-                capacity += enemy[i];
-            } else {
-                if (!pq.isEmpty() && pq.peek() < enemy[i]) {
-                    capacity -= pq.poll();
-                    capacity += enemy[i];
-                    pq.add(enemy[i]);
-                }
+            if (pq.size() > k) {
+                block -= pq.poll();
             }
             
-            if (sum - capacity > n) {
+            
+            if (total - block > n) {
                 return i;
             }
         }
-        
         
         return enemy.length;
     }
