@@ -1,80 +1,79 @@
 import java.util.*;
 
 class Solution {
-    public class Pair {
-        int x;
-        int y;
-        
-        Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-    
-    public static boolean[][] Visited;
-    public static String[][] Map;
-    public static Queue<Pair> Q;
-    public static int[] Dx = {0, 1, 0, -1};
-    public static int[] Dy = {1, 0, -1, 0};
+    public static final int P = 0;
+    public static final int O = 1;
+    public static final int X = 2;
     
     public int[] solution(String[][] places) {
-        int[] answer = new int[5];
+        int[] answer = new int[places.length];
+        int idx = 0;
         
-        for (int i = 0; i < 5; i++) {
-            int result = 1;
-            Visited = new boolean[5][5];
-            Q = new LinkedList<>();
-            Map = makeMap(places[i]);
-            answer[i] = 1;
+        for (String[] place : places) {
+            int isFine = 1;
+            List<int[]> list = new ArrayList<>();
+            int[][] map = new int[5][5];
             
-            while (!Q.isEmpty()) {
-                Pair cur = Q.poll();
+            for (int i = 0; i < 5; i++) {
+                String p = place[i];
                 
-                if (!dfs(cur.x, cur.y, 0)) {
-                    answer[i] = 0;
+                for (int j = 0; j < 5; j++) {
+                    char ch = p.charAt(j);
+                    
+                    if (ch == 'P') {
+                        map[i][j] = P;
+                        list.add(new int[]{i, j});
+                    } else if (ch == 'O') {
+                        map[i][j] = O;
+                    } else if (ch == 'X') {
+                        map[i][j] = X;
+                    }
+                }
+            }
+            
+            for (int i = 0; i < list.size(); i++) {
+                for (int j = i + 1; j < list.size(); j++) {
+                    int[] a = list.get(i);
+                    int[] b = list.get(j);
+                    
+                    boolean result = check(map, a, b);
+                                        
+                    if (!result) {
+                        isFine = 0;
+                        break;
+                    }
+                }
+                
+                if (isFine == 0) {
                     break;
                 }
             }
+            
+            answer[idx++] = isFine;
         }
         
         return answer;
     }
     
-    public String[][] makeMap(String[] place) {
-        String[][] result = new String[5][5];
+    public boolean check(int[][] map, int[] a, int[] b) {
+        boolean enable = true;
+        int xDist = Math.abs(a[0] - b[0]);
+        int yDist = Math.abs(a[1] - b[1]);
+        int xMid = (a[0] + b[0]) / 2;
+        int yMid = (a[1] + b[1]) / 2;
         
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                char ch = place[i].charAt(j);
-                result[i][j] = ch + "";
-                
-                if (ch == 'P') {
-                    Q.add(new Pair(i, j));
-                }
-            }
+        if (xDist + yDist > 2) {
+            return true;
         }
         
-        return result;
-    }
-    
-    public boolean dfs(int x, int y, int n) {
-        if (x < 0 || x >= 5 || y < 0 || y >= 5 || Visited[x][y] || Map[x][y].equals("X") || n > 2) return true;
-                
-        if (Map[x][y].equals("P") && n > 0) {
-            return false;
+        if (xDist == 2 || yDist == 2) {
+            enable = map[xMid][yMid] == X;
+        } else if (xDist == 1 && yDist == 1) {
+            enable = (map[a[0]][b[1]] == X) && map[b[0]][a[1]] == X;
+        } else {
+            enable = false;
         }
         
-        Visited[x][y] = true;
-        
-        for (int i = 0; i < 4; i++) {
-            int nx = x + Dx[i];
-            int ny = y + Dy[i];
-            
-            if (!dfs(nx, ny, n + 1)) {
-                return false;
-            }
-        }
-        
-        return true;
+        return enable;
     }
 }
